@@ -1,10 +1,16 @@
 ---
 layout: post
-title: You're up and running!
+title: REvil Part One: Passing Parameters on the Stack
 ---
 
-Next you can update your site name, avatar and other options using the _config.yml file in the root of your repository (shown below).
+Welcome to the first post of my blog! 
 
-![_config.yml]({{ site.baseurl }}/images/config.png)
+As an aspiring malware analyst, much of my free time is spent in Ghidra or a debugger pulling something apart.
 
-The easiest way to make your first post is to edit this one. Go into /_posts/ and update the Hello World markdown file. For more instructions head over to the [Jekyll Now repository](https://github.com/barryclark/jekyll-now) on GitHub.
+This post will be the first in a series detailing my analysis of how the REvil ransomware (AKA Sodinokibi) decrypts its strings at runtime and how I automated the decryption statically through Ghidra.
+
+This first entry will explain how REvil uses the stack to pass and formulate the required parameters to use one group of functions to decrypt varied length strings. 
+
+While this is my first analysis of ransomware, I have analysed other families such as Lokibot and Emotet. The latter of which will be the subject of a future post about a custom detection tool created in C++.
+
+hello

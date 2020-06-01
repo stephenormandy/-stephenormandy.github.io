@@ -30,9 +30,8 @@ Push 0x1
 ```
 Resulting in a stack looking like:
 <p align="center">
-  <img src="/images/initial_stack.png"/>
+  <img src="/images/initial_stack.png"></img>
 </p>
-![Initial Stack]({{ site.baseurl }}/images/initial_stack.png "Initial Stack")
 
 As there is much importance placed upon tracking where the top of the stack lies, there is a dedicated part of the CPU designed for just that.
 

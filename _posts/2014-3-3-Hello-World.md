@@ -1,6 +1,6 @@
 ---
 layout: post
-title: REvil Part One: Passing Parameters on the Stack
+title: REvil Part One - Passing Parameters on the Stack
 ---
 
 Welcome to the first post of my blog! 

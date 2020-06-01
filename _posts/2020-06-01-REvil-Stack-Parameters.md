@@ -94,7 +94,7 @@ For this post, the focus will be on decrypt_strings_wrapper. Specifically, on ho
 
 When analysing the REvil sample, the first call to decrypt_strings_wrapper is made when importing the libraries it requires. We shall start there and follow it through to understand the end to end process of decrypting a string. 
 
-The call instruction of interest is at 0x00413322:
+The call instruction of interest is at 0x00413331:
 
 ![Call to decrypt_strings_wrapper]({{ site.baseurl }}/images/call_decrypt_strings_wrapper.png)
 
@@ -108,7 +108,7 @@ We have already discussed LIFO and how it operates, this means that any push ins
 
 ![Stack from call to decrypt_strings_wrapper ]({{ site.baseurl }}/images/call_decrypt_strings_wrapper_stack.png)
 
-Now we move into decrypt_strings_wrapper.
+Now, we move into decrypt_strings_wrapper.
 
 With our newfound knowledge of the stack, we can see that calling decrypt_strings_wrapper automatically pushes the return address onto the stack:
 

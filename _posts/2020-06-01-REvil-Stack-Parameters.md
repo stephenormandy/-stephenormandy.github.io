@@ -106,7 +106,7 @@ Understanding what those parameters are go a long way to understanding the calle
 
 We have already discussed LIFO and how it operates, this means that any push instruction is the reverse order of how they would be in the stack. What we may assume would be the last parameter of pushing a memory address to 0x41D218, is in fact the first parameter at the top:
 
-[Stack from call to decrypt_strings_wrapper ]({{ site.baseurl }}/images/call_decrypt_strings_wrapper_stack.png)
+![Stack from call to decrypt_strings_wrapper ]({{ site.baseurl }}/images/call_decrypt_strings_wrapper_stack.png)
 
 Now we move into decrypt_strings_wrapper.
 

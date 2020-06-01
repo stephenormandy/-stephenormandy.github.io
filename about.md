@@ -4,12 +4,4 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
-
-### Contact me
-
-[email@domain.com](mailto:email@domain.com)
+As an aspiring malware analyst, much of my time is spent in a debugger or Ghidra pulling something apart. Malware analysis can be a difficult and time-consuming activity to take up. By creating this blog I hope that others will be able to learn how malware operates. As well as some other useful tips for detecting them along the way. 

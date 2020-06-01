@@ -132,7 +132,7 @@ The pointer to the plaintext buffer and plaintext length are retrieved and immed
 
 ![Retrieve pointers for plaintext storage/length]({{ site.baseurl }}/images/decrypt_strings_wrapper_retrieve_pointers.png)
 
-The LEA instruction returns a pointer/address of where the key is stored rather than the value of the key itself. Opposite to a “ptr” which will retrieve the value at the address instead. 
+The LEA instruction used to find the address of the ciphertext returns a pointer/address rather than the value at the location. Opposite to a “ptr” which will retrieve the value at the address instead. In this instance, it is adding the values of the base address plus key length to return the address of the ciphertext.
 
 From there it is a case of pushing the rest of the values: address of the cipher text, key length and the address of the key. By understanding the parameters, it became clear that REvil stores its RC4 keys and ciphertext appended to each other:
 

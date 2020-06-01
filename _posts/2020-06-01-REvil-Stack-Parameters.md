@@ -57,3 +57,15 @@ So far, we have discussed two instructions for adding/removing items on the stac
 <p align="center">
   <img src="/images/stack_frame.png">
 </p>
+
+| Register Name  | Purpose  |
+|:-:|:-:|
+| EAX  | Storing maths calculations  |
+| EBX  | Pointers to memory locations  |
+| ECX  | Loop counter  |
+| EDX  | Storing maths calculations  |
+| EDI  | Copying strings across memory locations  |
+| ESI  | Copying strings across memory locations |
+| EBP  | Base pointer - bottom of the stack |
+| ESP  | Stack pointer – top of stack  |
+| EIP  | Address of next instruction to execute  |

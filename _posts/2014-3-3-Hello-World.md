@@ -13,4 +13,4 @@ This first entry will explain how REvil uses the stack to pass and formulate the
 
 While this is my first analysis of ransomware, I have analysed other families such as Lokibot and Emotet. The latter of which will be the subject of a future post about a custom detection tool created in C++.
 
-hello
+

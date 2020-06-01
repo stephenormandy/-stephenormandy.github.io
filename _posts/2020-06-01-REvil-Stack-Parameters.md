@@ -30,7 +30,7 @@ Push 0x1
 ```
 Resulting in a stack looking like:
 <p align="center">
-  <img src="/images/initial_stack.png"/>
+  <img src="/images/initial_stack.png">
 </p>
 
 As there is much importance placed upon tracking where the top of the stack lies, there is a dedicated part of the CPU designed for just that.

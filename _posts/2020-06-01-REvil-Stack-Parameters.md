@@ -147,5 +147,6 @@ REvil uses one set of functions for all its string decryption needs. It’s top 
 3.	RC4 key length
 4.	Length of plaintext
 5.	Pointer to address that stores the plain text
+
 By adding the offset value in parameter two to the base address in parameter one, REvil can dynamically select an encrypted string stored in the .data section. Further analysis shows that the RC4 key is appended to each piece of cipher text. 
 While the base address will be different for each sample, the parameters are the same. Therefore, we now know how REvil stores and accesses its encrypted strings, very useful for when we want to decrypt them ourselves.

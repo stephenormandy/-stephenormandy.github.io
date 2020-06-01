@@ -30,13 +30,12 @@ Push 0x1
 ```
 Resulting in a stack looking like:
 
-<p align="center">
-  <img src="/images/initial_stack.png">
-</p>
+
 
 As there is much importance placed upon tracking where the top of the stack lies, there is a dedicated part of the CPU designed for just that.
 
 CPU’s have very small areas of memory (max 4 bytes) within them called “registers”. Each register typically has a purpose:
+
 
 | Register Name  | Purpose  |
 |:-:|:-:|
@@ -49,6 +48,7 @@ CPU’s have very small areas of memory (max 4 bytes) within them called “regi
 | EBP  | Base pointer - bottom of the stack |
 | ESP  | Stack pointer – top of stack  |
 | EIP  | Address of next instruction to execute  |
+
 
 Source/Further Reading: http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html
 

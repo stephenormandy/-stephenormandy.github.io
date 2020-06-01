@@ -50,5 +50,10 @@ CPU’s have very small areas of memory (max 4 bytes) within them called “regi
 | EIP  | Address of next instruction to execute  |
 Source/Further Reading: http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html
 
+As you can see in the table above, ESP is the register that holds the current address to the top of the stack. Whereas EBP holds the address to the bottom of the stack. There is more nuances and details to each register but for the purpose of this post it is most important to be aware of EBP and ESP.
 
+So far, we have discussed two instructions for adding/removing items on the stack, however it is feasible to read values from higher in the stack by getting them relevant to the base (or frame) pointer (the address pointed to in EBP). Each function has its own section of the stack, called a stack frame:
 
+<p align="center">
+  <img src="/images/stack_frame.png">
+</p>

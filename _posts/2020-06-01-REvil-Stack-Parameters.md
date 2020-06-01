@@ -22,11 +22,11 @@ A stack is a particular way of storing information, in a higher programming lang
 Let’s assume that we want to fill a stack with numbers from 1 to 5.  Achieving that under LIFO means the value we want to be first, must be the last one entered. In x86 Assembly, that would be: 
 
 ```assembly
-Push 0x5
-Push 0x4
-Push 0x3
-Push 0x2
-Push 0x1
+PUSH 0x5
+PUSH 0x4
+PUSH 0x3
+PUSH 0x2
+PUSH 0x1
 ```
 Resulting in a stack looking like:
 
@@ -65,8 +65,8 @@ So far, we have discussed two instructions for adding/removing items on the stac
 Assuming that the five values we pushed before were parameters to a function, calling the new function automatically places the return address as the instruction after the call onto the stack. The called function will then push the current value of EBP, which is still pointing to the bottom of the callers stack frame and moves the value of ESP (stack pointer to the top of the stack) into EBP. Starting the new stack frame for the current function. Each function will start with the following two instructions to make this happen:
 
 ```assembly
-Push EBP
-Mov EBP, ESP
+PUSH EBP
+MOV EBP, ESP
 ```
 
 In a "mov" command, the first parameter (called operand) is the destination and the second operand is the source, so we are moving the value of ESP into EBP. Once the called function finishes, it knows where to go back to by using the return address.
@@ -79,7 +79,7 @@ X32dbg labels (names) functions based on their address. Therefore, throughout th
 
 Below is a diagram detailing the flow between functions for decrypting a string, addresses are included in parentheses:
 
-[REvil decryption functions]({{ site.baseurl}}/images/decryption_functions.png)
+![REvil decryption functions]({{ site.baseurl}}/images/decryption_functions.png)
 
 A function that requires a string decrypted will start by making a call to decrypt_strings_wrapper, this takes in five parameters:
 1.	Base address for cipher text and key
@@ -96,11 +96,11 @@ When analysing the REvil sample, the first call to decrypt_strings_wrapper is ma
 
 The call instruction of interest is at 0x00413322:
 
-[Call to decrypt_strings_wrapper]({{ site.baseurl}}/images/call_decrypt_strings_wrapper.png)
+![Call to decrypt_strings_wrapper]({{ site.baseurl}}/images/call_decrypt_strings_wrapper.png)
 
 A quick side note, if you see a lot of push instructions before a call, then that signifies parameters are being pushed into a function. For example, this is the same call instruction but without the helpful label and comments:
 
-[Call to decrypt_strings_wrapper without comments]({{ site.baseurl}}/images/call_decrypt_strings_wrapper_unedited.png)
+![Call to decrypt_strings_wrapper without comments]({{ site.baseurl}}/images/call_decrypt_strings_wrapper_unedited.png)
 
 Understanding what those parameters are go a long way to understanding the called function as a whole. 
 
@@ -112,31 +112,31 @@ Now we move into decrypt_strings_wrapper.
 
 With our newfound knowledge of the stack, we can see that calling decrypt_strings_wrapper automatically pushes the return address onto the stack:
 
-[Call to decrypt_strings_wrapper sets the return address]({{ site.baseurl}}/images/call_decrypt_strings_wrapper_return.png)
+![Call to decrypt_strings_wrapper sets the return address]({{ site.baseurl}}/images/call_decrypt_strings_wrapper_return.png)
 
 The highlighted value at the top of the stack is the EBP, and its value is set to what the previous base pointer was. 4 bytes below that, there is the return address and below that we have our five parameters that were pushed. 
 
 Accessing these parameters can be done by using an offset from the address of EBP. Each entry in the stack is 4 bytes, so to get the first parameter previously pushed, it would be EBP+8 (EBP+4 is the return address). Within assembly this is simply achieved with the mov instruction:
 
-[Retrieving a parameter from the stack]({{ site.baseurl}}/images/decrypt_strings_wrapper_get_parameter.png)
+![Retrieving a parameter from the stack]({{ site.baseurl}}/images/decrypt_strings_wrapper_get_parameter.png)
 
 A dword ptr  retrieves 4 bytes of data that reside at the specified address. In the case above, it returns the 4 bytes at 0x0018FEC0, meaning EDX now holds the base address for the cipher text (0x0041D218).
 
-[Placing the parameter into EDX]({{ site.baseurl}}/images/decrypt_strings_wrapper_setting_edx.png)
+![Placing the parameter into EDX]({{ site.baseurl}}/images/decrypt_strings_wrapper_setting_edx.png)
 
 Next up, the offset value stored in EBP+C (12 in decimal) is then added to that base address to generate the pointer to the start of the required key and ciphertext:
 
-[Generate pointer to required RC4 key]({{ site.baseurl}}/images/decrypt_strings_wrapper_generate_pointer_to_key.png)
+![Generate pointer to required RC4 key]({{ site.baseurl}}/images/decrypt_strings_wrapper_generate_pointer_to_key.png)
 
 The pointer to the plaintext buffer and plaintext length are retrieved and immediately pushed:
 
-[Retrieve pointers for plaintext storage/length]({{ site.baseurl}}/images/decrypt_strings_wrapper_retrieve_pointers.png)
+![Retrieve pointers for plaintext storage/length]({{ site.baseurl}}/images/decrypt_strings_wrapper_retrieve_pointers.png)
 
 The LEA instruction returns a pointer/address of where the key is stored rather than the value of the key itself. Opposite to a “ptr” which will retrieve the value at the address instead. 
 
 From there it is a case of pushing the rest of the values: address of the cipher text, key length and the address of the key. By understanding the parameters, it became clear that REvil stores its RC4 keys and ciphertext appended to each other:
 
-[View of RC4 key and ciphertext stored in PE section]({{ site.baseurl}}/images/decrypt_strings_wrapper_ciphertext_in_section.png)
+![View of RC4 key and ciphertext stored in PE section]({{ site.baseurl}}/images/decrypt_strings_wrapper_ciphertext_in_section.png)
 
 All RC4 keys and ciphertext combinations start from 0x0041D218 in this sample, this is a constant value throughout each call to decrypt_strings_wrapper. By changing the offset and key length it is feasible to access each string in a non-linear manner. It is important to note that this base address changes for each sample but as the parameters are at fixed positions this makes it slightly easier to automate decryption. How that is accomplished will be discussed later, the next post will detail how these parameters are then used with the RC4 algorithm itself.
 

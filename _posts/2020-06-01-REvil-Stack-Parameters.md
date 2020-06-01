@@ -29,5 +29,25 @@ Push 0x2
 Push 0x1
 ```
 Resulting in a stack looking like:
-
+<p align="center">
 ![Initial Stack]({{ site.baseurl }}/images/initial_stack.png "Initial Stack")
+</p>
+As there is much importance placed upon tracking where the top of the stack lies, there is a dedicated part of the CPU designed for just that.
+
+CPU’s have very small areas of memory (max 4 bytes) within them called “registers”. Each register typically has a purpose:
+<p align="center">
+| Register Name  | Purpose  |
+|:-:|:-:|
+| EAX  | Storing maths calculations  |
+| EBX  | Pointers to memory locations  |
+| ECX  | Loop counter  |
+| EDX  | Storing maths calculations  |
+| EDI  | Copying strings across memory locations  |
+| ESI  | Copying strings across memory locations |
+| EBP  | Base pointer - bottom of the stack |
+| ESP  | Stack pointer – top of stack  |
+| EIP  | Address of next instruction to execute  |
+Source/Further Reading: http://www.eecg.toronto.edu/~amza/www.mindsec.com/files/x86regs.html
+</p>
+
+

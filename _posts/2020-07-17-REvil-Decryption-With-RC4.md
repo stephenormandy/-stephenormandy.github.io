@@ -41,7 +41,7 @@ for i from 0 to 255
         j := (j + S[i] + key[i mod,  keylength]) mod 256
         swap values of S[i] and S[j]
 endfor
-```
+
 
 Firstly, an array is created with values from 0 to 255. By looking for an instruction comparing a counter to 255 (or below 256\0x100) is evidence of this array (and that RC4 is implemented). This array is referred to as S in the pseudocode above and what this looks like in a debugger is below:
 

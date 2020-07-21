@@ -56,6 +56,28 @@ EAX is incremented by 1 and compared to 0x100 (2565), if it is below then it jum
 
 ![Completed S array]({{ site.baseurl }}/images/complete_S_array.png)
 
+The second loop of the key schedule algorithm is used to swap values around based on the key and it’s length (hence why both were parameters for this function). 
 
+![Swapping values in the S array]({{ site.baseurl }}/images/swapping_values_S_array.png)
 
+To make the maths operations slightly easier to follow, the loop has been run twice already. Therefore, our counter “i” is set to 2 (also remember that counting positions in of arrays is done from 0, here 2 would equate to the third position). 
 
+ECX is used to store the i value, which is also copied into EAX. The value of S[i] is placed into the lowest byte of EBX (noted by bl), then copied into ECX:
+
+![Initialise the second loop of the KSA]({{ site.baseurl }}/images/initialise_second_loop.png)
+
+A div command with an operand of the value at ebp+10, the key length, is the equivalent of the “i mod keylength” operation to get a value from the key:
+
+![Calculate value to retrieve from the key]({{ site.baseurl }}/images/retrieve_value_from_key.png)
+
+The div command works by concatenating the two values of EDX to EAX (making a 64bit number) and dividing it by the operand given. In this case the equation would be:
+
+0000000000000002 / 0xA (10) = 0 remainder 2
+
+That remainder value is stored in EDX and the whole value stored in EAX. As a modulo calculation is akin to dividing the number by its modulo and taking the remainder, the instruction at 0x00412DF1 uses EDX to get a pointer into the key. So, it retrieves the third position in the key and stores it in EAX:
+
+![Instruction to retrieve value from key]({{ site.baseurl }}/images/div_result_1.png)
+
+![Value from key in memory]({{ site.baseurl }}/images/div_result_2.png)
+
+![Value from key in EAX]({{ site.baseurl }}/images/div_result_3.png)

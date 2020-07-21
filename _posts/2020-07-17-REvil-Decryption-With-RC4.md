@@ -81,3 +81,19 @@ That remainder value is stored in EDX and the whole value stored in EAX. As a mo
 ![Value from key in memory]({{ site.baseurl }}/images/div_result_2.png)
 
 ![Value from key in EAX]({{ site.baseurl }}/images/div_result_3.png)
+
+J is then added to key[2], subsequently that is added to S[i], which completes the main line in this loop of forming the value j:
+
+![Final instruction to formulate value of j]({{ site.baseurl }}/images/forming_j.png)
+
+Finally, the values of S[j] and S[i] are swapped:
+
+![Swapping values of s and j in S array]({{ site.baseurl }}/images/swap_s_j.png)
+
+![Swapping values of s and j in S array]({{ site.baseurl }}/images/swap_s_j_2.png)
+
+Values at positions S[2] and S[7] were swapped over. 
+
+It repeats this loop until ECX/i is no longer below 0x100 (255). From what was a uniform array now turns into a jumble:
+
+![Completed KSA]({{ site.baseurl }}/images/completed_KSA.png)

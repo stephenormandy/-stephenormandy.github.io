@@ -97,3 +97,47 @@ Values at positions S[2] and S[7] were swapped over.
 It repeats this loop until ECX/i is no longer below 0x100 (255). From what was a uniform array now turns into a jumble:
 
 ![Completed KSA]({{ site.baseurl }}/images/completed_KSA.png)
+
+The address of S is returned to decrypt_strings where string_decrypt is then called. String_decrypt requires the parameters of the plaintext length, the buffer for storage, cipher text and the S array. The functionality here is referred to as the Pseudo-random generation algorithm. Essentially it modifies the S array further and then outputs a keystream value that cipher text will be XORed against. Pseudocode is below:
+
+```
+i := 0
+j := 0
+while GeneratingOutput:
+    i := (i + 1) mod 256
+    j := (j + S[i]) mod 256
+    swap values of S[i] and S[j]
+    K := S[(S[i] + S[j]) mod 256]
+    output K
+endwhile
+```
+This loop begins at 0x00412E32:
+
+![Second stage of RC4]({{ site.baseurl }}/images/rc4_stage_2.png)
+
+A pointer to the S array is stored in EDX, i is incremented by 1 and set in EAX:
+
+![Initialise second stage]({{ site.baseurl }}/images/initialise_stage_2.png)
+
+j is then added to the S[i] value in EAX:
+
+![Create j value in second stage]({{ site.baseurl }}/images/stage_2_set_j.png)
+
+Values at S[i] and S[j] are swapped around, the new value of S[i] is copied into EAX once again:
+
+![Create j value in second stage]({{ site.baseurl }}/images/stage_2_swap_i_j.png)
+
+S[j] and S[i] are added to get a new pointer into S, stored in EAX. This is the keystream value which is XORed against the cipher text to get the plaintext value. The plaintext character in EAX is moved into the plaintext buffer, the buffer address is increased by 1 to find the next available position, the length of plaintext is decremented by 1 and if not equal to zero repeats the process:  
+
+![XOR to reveal plaintext]({{ site.baseurl }}/images/stage_2_xor.png)
+
+Plaintext is now revealed:
+
+![Plaintext]({{ site.baseurl }}/images/plaintext.png)
+
+### Summary
+
+By looking for two consecutive loops, with the first one being executed 255 times, RC4 is a relatively easy algorithm to identify. While it may be intimidating at first, RC4 is also a simple algorithm. Matching the pseudocode of the algorithm to x86 assembly, it is possible to understand just how it decrypts strings within REvil. With that understanding, the final post of this series will layout how the decryption process can be automated within Ghidra. 
+
+
+

@@ -32,7 +32,7 @@ The first call to start the RC4 decryption is to generate_key_schedule(0x00412DC
 
 Creating and initialising the keystream is done with a "Key Schedule Algorithm", which is made up of two loops:
 
-```bash
+```
 for i from 0 to 255
         S[i] := i
 endfor

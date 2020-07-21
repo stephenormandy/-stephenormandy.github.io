@@ -34,7 +34,7 @@ Creating and initialising the keystream is done with a "Key Schedule Algorithm",
 
 ```
 for i from 0 to 255
-    S[i] := i
+        S[i] := i
 
 endfor
 j := 0

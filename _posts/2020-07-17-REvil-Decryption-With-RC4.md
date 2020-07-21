@@ -42,7 +42,17 @@ for i from 0 to 255
 endfor
 ```
 
+Firstly, an array is created with values from 0 to 255. By looking for an instruction comparing a counter to 255 (or below 256\0x100) is evidence of this array (and that RC4 is implemented). This array is referred to as S in the pseudocode above and what this looks like in a debugger is below:
 
+![REvil initialising S array in RC4]({{ site.baseurl }}/images/first_loop_RC4.png)
+
+In this first loop, EDI holds the first parameter (buffer that receives the S array) and EAX is used as both a counter and the value “I”. Initialising EAX to 0, the lowest byte of EAX (denoted by al) is moved into S[i]:
+
+![Build from 0-255]({{ site.baseurl }}/images/initialise_S_array.png)
+
+EAX is incremented by 1 and compared to 0x100 (2565), if it is below then it jumps up to that mov instruction again. This simple builds out the initial S array:
+
+![Completed S array]({{ site.baseurl }}/images/complete_S_array.png)
 
 
 

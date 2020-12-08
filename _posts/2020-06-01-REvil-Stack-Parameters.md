@@ -5,11 +5,11 @@ title: REvil Part One - Passing Parameters on the Stack
 
 Welcome to the first post of my blog! 
 
-This post will be the first in a series detailing my analysis of how the REvil ransomware (AKA Sodinokibi) decrypts its strings at runtime and how I automated the decryption statically through Ghidra.
+This will be the first in a series detailing the analysis of REvil's (AKA Sodinokibi) runtime string decryption.
 
 This first entry will explain how REvil uses the stack to pass and formulate the required parameters to use one group of functions to decrypt varied length strings. 
 
-While this is my first analysis of ransomware, I have analysed other families such as Lokibot and Emotet. The latter of which will be the subject of a future post about a custom detection tool created in C++.
+While this is my first analysis of ransomware, I have analysed other families such as Lokibot, Maze and Emotet. The latter of which will be the subject of a future post about a custom detection tool created in C++.
 
 ### Why REvil?
 REvil got media attention at the start of the year with their attack on [Travelex](https://www.trendmicro.com/vinfo/us/security/news/cybercrime-and-digital-threats/sodinokibi-ransomware-increases-yearend-activity-targets-airport-and-other-businesses). As I like a challenge and REvil has garnered a reputation for being a sophisticated piece of malware, I grabbed a sample and got to work.
@@ -17,7 +17,7 @@ REvil got media attention at the start of the year with their attack on [Travele
 ### The Stack and Registers
 Before diving into the details of this post, this section is a brief overview of two main topics: the stack and registers.
 
-A stack is a particular way of storing information, in a higher programming language like Python this is akin to a list data structure. But unlike lists, a stack only allows you to push (add) or pop (remove) elements that reside at the top of it, due to a governing principle of Last In First out (LIFO).
+A stack is a particular way of storing information. In a programming language like Python, a stack is similar to a list data structure. Unlike lists, a stack only allows you to push (add) or pop (remove) elements that reside at the top. Due to a governing principle of Last In First out (LIFO).
 
 Let’s assume that we want to fill a stack with numbers from 1 to 5.  Achieving that under LIFO means the value we want to be first, must be the last one entered. In x86 Assembly, that would be: 
 
@@ -120,7 +120,7 @@ Accessing these parameters can be done by using an offset from the address of EB
 
 ![Retrieving a parameter from the stack]({{ site.baseurl }}/images/decrypt_strings_wrapper_get_parameter.png)
 
-A dword ptr  retrieves 4 bytes of data that reside at the specified address. In the case above, it returns the 4 bytes at 0x0018FEC0, meaning EDX now holds the base address for the cipher text (0x0041D218).
+A dword ptr retrieves 4 bytes of data that reside at the specified address. In the case above, it returns the 4 bytes at 0x0018FEC0, meaning EDX now holds the base address for the cipher text (0x0041D218).
 
 ![Placing the parameter into EDX]({{ site.baseurl }}/images/decrypt_strings_wrapper_setting_edx.png)
 
@@ -149,4 +149,4 @@ REvil uses one set of functions for all its string decryption needs. It’s top 
 5.	Pointer to address that stores the plain text
 
 By adding the offset value in parameter two to the base address in parameter one, REvil can dynamically select an encrypted string stored in the .data section. Further analysis shows that the RC4 key is appended to each piece of cipher text. 
-While the base address will be different for each sample, the parameters are the same. Therefore, we now know how REvil stores and accesses its encrypted strings, very useful for when we want to decrypt them ourselves.
+While the base address will be different for each sample, the parameters are the same. Therefore, we know how REvil stores and accesses its encrypted strings, handy for when we want to decrypt them ourselves.
